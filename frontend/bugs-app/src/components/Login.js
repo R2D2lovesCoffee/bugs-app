@@ -37,7 +37,7 @@ export default class Login extends React.Component {
                 localStorage.setItem('role', data.role);
                 localStorage.setItem('team_id', data.team_id);
                 if (data.team_id !== null) {
-                    history.push('/team');
+                    history.push('/home');
                 } else {
                     history.push('/set-team');
                 }

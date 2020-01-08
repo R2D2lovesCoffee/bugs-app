@@ -11,6 +11,22 @@ router.get('/', (req, res) => {
     });
 })
 
+router.get('/:id/users', (req, res) => {
+    const id = Number(req.params.id);
+    Team.findOne({
+        attributes: ['id'],
+        include: [{ model: User, as: 'users', attributes: ['id', 'email'] }],
+        where: { id }
+    }).then(team => {
+        console.log(team);
+        res.send(team.users);
+    })
+        .catch(error => {
+            console.log(error);
+            res.status(500).send({ message: 'Something went wrong. Try again later.' })
+        });
+})
+
 router.post('/', (req, res) => {
     const { teamName, userId } = req.body;
     Team.findOne({ where: { name: teamName } })

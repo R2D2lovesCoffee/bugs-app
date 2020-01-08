@@ -47,7 +47,7 @@ export default class SetTeam extends React.Component {
                 return response.data;
             }).then(team => {
                 localStorage.setItem('team_id', team.id);
-                history.push('/team');
+                history.push('/home');
             }).catch(error => {
                 this.setState({ messageCreateTeam: error.response.data.message });
             })
@@ -62,15 +62,15 @@ export default class SetTeam extends React.Component {
                 return response.data;
             }).then(() => {
                 localStorage.setItem('team_id', team.id);
-                history.push('/team');
+                history.push('/home');
             }).catch(error => {
-                this.setState({ messageCreateTeam: error.response.data.message });
+                this.setState({ messageSetTeam: error.response.data.message });
             })
     }
 
     render() {
         if (localStorage.getItem('team_id') !== 'null' && localStorage.getItem('team_id') !== 'undefined') {
-            return <Redirect to="/team" />
+            return <Redirect to="/home" />
         } else {
             return (
                 <div>

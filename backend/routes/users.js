@@ -1,5 +1,7 @@
 const router = require('express').Router();
 const User = require('../models/User');
+const Team = require('../models/Team');
+const Project = require('../models/Project');
 const jwt = require('jsonwebtoken');
 
 router.post('/register', (req, res) => {
@@ -43,6 +45,31 @@ router.put('/team', (req, res) => {
     User.update({ team_id: teamId }, { where: { id: userId } })
         .then(() => res.send({ message: 'Success' }))
         .catch(error => {
+            console.log(error);
+            res.status(500).send({ message: 'Something went wrong. Try again later.' })
+        });
+})
+
+router.get('/:id/team', (req, res) => {
+    const id = Number(req.params.id);
+    User.findOne({
+        where: { id },
+        attributes: ['team_id'],
+    })
+        .then(user => {
+            Team.findOne({
+                where: { id: user.team_id },
+                include: [
+                    // { model: User, as: 'users', attributes: ['id', 'email'] },
+                    { model: Project, as: 'projects', attributes: ['id', 'repo'] },
+                ],
+            })
+                .then(team => res.send(team))
+                .catch(error => {
+                    console.log(error);
+                    res.status(500).send({ message: 'Something went wrong. Try again later.' })
+                });
+        }).catch(error => {
             console.log(error);
             res.status(500).send({ message: 'Something went wrong. Try again later.' })
         });

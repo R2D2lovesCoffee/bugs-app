@@ -20,6 +20,10 @@ ul {
   margin: auto;
 }
 
+.toggleable {
+  cursor: pointer;
+}
+
 button {
   margin: 0 0.3em;
 }
