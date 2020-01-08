@@ -2,3 +2,28 @@ body {
   background-color: #313131;
   color: #f1f1f1;
 }
+
+.form {
+  width: 30%;
+  margin: auto;
+}
+
+ul {
+  list-style-type: none;
+}
+
+.small-input {
+  width :50px;
+}
+
+.centered {
+  margin: auto;
+}
+
+button {
+  margin: 0 0.3em;
+}
+
+select {
+  margin: 0 0.5em;
+}

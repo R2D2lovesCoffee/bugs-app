@@ -27,10 +27,8 @@ router.post('/login', (req, res) => {
     User.findOne({ where: { email, password } })
         .then(user => {
             if (user) {
-                const token = jwt.sign({ email, role: user.role }, 'secret');
-                res.clearCookie('token');
-                res.cookie('token', token);
-                res.send({ message: 'Success.' });
+                delete user.password;
+                res.send(user);
             } else {
                 res.status(400).send({ message: 'Incorrect username or password.' })
             }
