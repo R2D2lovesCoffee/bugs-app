@@ -36,7 +36,11 @@ export default class Login extends React.Component {
                 localStorage.setItem('email', data.email);
                 localStorage.setItem('role', data.role);
                 localStorage.setItem('team_id', data.team_id);
-                history.push('/home');
+                if (data.team_id !== null) {
+                    history.push('/team');
+                } else {
+                    history.push('/set-team');
+                }
             }).catch(error => {
                 this.setState({ message: error.response.data.message });
             })

@@ -3,10 +3,10 @@ const fs = require('fs');
 
 const config = {
     port: 5000,
-    dbName: 'cosmindb',
-    dbUser: 'amber',
+    dbName: 'bugsapp',
+    dbUser: 'root',
     dbPass: JSON.parse(fs.readFileSync('../../pass.json', 'utf8')).pass,
-    dbHost: '109.100.42.38',
+    dbHost: '127.0.0.1',
     dbDialect: 'mysql'
 };
 

@@ -38,4 +38,14 @@ router.post('/login', (req, res) => {
         });
 })
 
+router.put('/team', (req, res) => {
+    const { teamId, userId } = req.body;
+    User.update({ team_id: teamId }, { where: { id: userId } })
+        .then(() => res.send({ message: 'Success' }))
+        .catch(error => {
+            console.log(error);
+            res.status(500).send({ message: 'Something went wrong. Try again later.' })
+        });
+})
+
 module.exports = router;

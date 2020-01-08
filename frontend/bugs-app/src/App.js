@@ -1,6 +1,7 @@
 import React from 'react';
 import Login from './components/Login';
 import Register from './components/Register';
+import Team from './components/Team';
 import './App.css';
 import {
   // BrowserRouter,
@@ -9,7 +10,8 @@ import {
   Router
 } from "react-router-dom";
 import history from './history';
-import Home from './components/Home';
+import NoTeam from './components/SetTeam';
+import SetTeam from './components/SetTeam';
 
 class App extends React.Component {
   render() {
@@ -19,14 +21,17 @@ class App extends React.Component {
           <Route path="/" exact>
             <Login />
           </Route>
-          <Route path="/register" exact>
+          <Route path="/register">
             <Register />
           </Route>
-          <Route path="/login" exact>
+          <Route path="/login">
             <Login />
           </Route>
-          <Route path="/home" exact>
-            <Home />
+          <Route path="/team">
+            <Team />
+          </Route>
+          <Route path="/set-team">
+            <SetTeam />
           </Route>
         </Switch>
       </Router>

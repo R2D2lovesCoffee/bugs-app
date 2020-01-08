@@ -8,4 +8,4 @@ module.exports = db.define('team', {
         autoIncrement: true
     },
     name: Sequelize.STRING
-})
+}, { timestamps: false })

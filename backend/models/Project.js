@@ -8,7 +8,7 @@ module.exports = db.define('project', {
         primaryKey: true,
         autoIncrement: true
     },
-    name: Sequelize.STRING,
+    // name: Sequelize.STRING,
     repo: Sequelize.STRING,
     team_id: {
         type: Sequelize.INTEGER,
@@ -18,5 +18,5 @@ module.exports = db.define('project', {
         }
     }
 }, {
-        timestamps: false
-    })
+    timestamps: false
+})

@@ -19,5 +19,5 @@ module.exports = db.define('bug', {
     priority: Sequelize.INTEGER,
     description: Sequelize.STRING
 }, {
-        timestamps: false
-    })
+    timestamps: false
+})

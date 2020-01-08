@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import history from '../history';
 import { host } from '../config';
 import { Link } from "react-router-dom";
 
@@ -41,6 +42,7 @@ export default class Register extends React.Component {
                     return response.data;
                 }).then((response) => {
                     this.setState({ message: response.message, username: '', email: '', password: '', confirmPassword: '' });
+                    history.push('/login');
                 }).catch(error => {
                     this.setState({ message: error.response.data.message });
                 })
