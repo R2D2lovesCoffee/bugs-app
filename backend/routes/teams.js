@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const Team = require('../models/Team');
 const User = require('../models/User');
+const Project = require('../models/Project');
 
 router.get('/', (req, res) => {
     Team.findAll().then(teams => {
@@ -18,7 +19,6 @@ router.get('/:id/users', (req, res) => {
         include: [{ model: User, as: 'users', attributes: ['id', 'email'] }],
         where: { id }
     }).then(team => {
-        console.log(team);
         res.send(team.users);
     })
         .catch(error => {
@@ -69,6 +69,38 @@ router.delete('/:id', (req, res) => {
                 res.status(500).send({ message: 'Something went wrong. Try again later.' })
             });
     }
+})
+
+router.post('/:id/projects', (req, res) => {
+    const id = Number(req.params.id);
+    const { name } = req.body;
+    if (isNaN(id)) {
+        res.status(400).send({ message: 'Bad request!' });
+    }
+    Team.findOne({ where: { id }, raw: true })
+        .then(team => {
+            if (!team) {
+                res.status(400).send({ message: 'Team not found!' });
+            } else {
+                Project.findOne({ where: { repo: `${team.name}/${name}` }, raw: true })
+                    .then(project => {
+                        if (!project) {
+                            Project.create({ repo: `${team.name}/${name}`, team_id: id })
+                                .then(project => res.send(project))
+                                .catch(error => {
+                                    console.log(error);
+                                    res.status(500).send({ message: 'Something went wrong. Try again later.' })
+                                });
+                        } else {
+                            res.status(400).send({ message: 'Project name must be unique!' });
+                        }
+
+                    })
+            }
+        }).catch(error => {
+            console.log(error);
+            res.status(500).send({ message: 'Something went wrong. Try again later.' })
+        });
 })
 
 module.exports = router;

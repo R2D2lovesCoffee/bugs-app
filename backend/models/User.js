@@ -17,7 +17,8 @@ module.exports = db.define('user', {
             model: Team,
             key: 'id',
         }
-    }
+    },
+    alocated: Sequelize.BOOLEAN
 }, {
-        timestamps: false
-    })
+    timestamps: false
+})

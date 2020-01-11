@@ -54,6 +54,16 @@ Bug.belongsTo(Commit, {
     foreignKey: 'commit_id'
 })
 
+Bug.belongsTo(User, {
+    as: 'alocatedUser',
+    foreignKey: 'alocated_user_id'
+})
+
+Bug.belongsTo(Commit, {
+    as: 'solvedCommit',
+    foreignKey: 'solved_with_commit'
+})
+
 db.sync();
 
 app.listen(port, () => {

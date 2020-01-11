@@ -78,15 +78,15 @@ export default class SetTeam extends React.Component {
                         <h3>Create Team</h3>
                         <label>Name:</label>
                         <input placeholder="..." onChange={this.teamNameChanged.bind(this)} />
-                        <button onClick={this.submitCreateTeam.bind(this)}>Create And Join!</button>
+                        <button className="btn btn-primary" onClick={this.submitCreateTeam.bind(this)}>Create And Join!</button>
                         <p>{this.state.messageCreateTeam}</p>
                         <h3>Join A Team</h3>
-                        <ul>
+                        {this.state.teams.length ? <ul>
                             {this.state.teams.map((team, index) => <div key={index.toString()}>
                                 <span>{team.name}</span>
                                 <button onClick={this.joinTeam.bind(this, team)}>Join!</button>
                             </div>)}
-                        </ul>
+                        </ul> : <p>There are no teams</p>}
                     </div>
                 </div>
             )

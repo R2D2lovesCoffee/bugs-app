@@ -36,6 +36,7 @@ export default class Login extends React.Component {
                 localStorage.setItem('email', data.email);
                 localStorage.setItem('role', data.role);
                 localStorage.setItem('team_id', data.team_id);
+                localStorage.setItem('alocated', data.alocated);
                 if (data.team_id !== null) {
                     history.push('/home');
                 } else {
@@ -56,7 +57,7 @@ export default class Login extends React.Component {
                     <input type="password" placeholder="password" onChange={this.passwordChanged.bind(this)}></input>
                 </div>
                 <div>
-                    <button className="btn centered" onClick={this.handleLogin.bind(this)}>LOGIN</button>
+                    <button className="btn btn-primary centered" onClick={this.handleLogin.bind(this)}>LOGIN</button>
                 </div>
                 <div>
                     <p>{this.state.message}</p>

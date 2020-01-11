@@ -11,6 +11,7 @@ export default class Register extends React.Component {
             email: '',
             password: '',
             confirmPassword: '',
+            role: 'MP',
             message: '',
         }
     }
@@ -28,13 +29,13 @@ export default class Register extends React.Component {
     }
 
     handleRegister() {
-        const { email, password, confirmPassword } = this.state;
+        const { email, password, confirmPassword, role } = this.state;
         if (!email.length || !password.length) {
             this.setState({ message: 'Complete all fields!' });
         } else if (password !== confirmPassword) {
             this.setState({ message: 'Passwords do not match!' });
         } else {
-            axios.post(`${host}/users/register`, { email, password })
+            axios.post(`${host}/users/register`, { email, password, role })
                 .then(response => {
                     if (response.error) {
                         throw response.error;
@@ -47,6 +48,10 @@ export default class Register extends React.Component {
                     this.setState({ message: error.response.data.message });
                 })
         }
+    }
+
+    handleRoleChange(event) {
+        this.setState({ role: event.target.value });
     }
 
     render() {
@@ -62,11 +67,19 @@ export default class Register extends React.Component {
                     <input type="password" value={this.state.confirmPassword} placeholder="confirm password" onChange={(event) => this.confirmPasswordChanged(event)}></input>
                 </div>
                 <div>
-                    <button className="btn centered" onClick={this.handleRegister.bind(this)}>REGISTER</button>
+                    <span>Role</span>
+                    <select onChange={this.handleRoleChange.bind(this)}>
+                        <option value="MP">MP</option>
+                        <option value="TST">TST</option>
+                    </select>
+                </div>
+                <div>
+                    <button className="btn btn-primary centered" onClick={this.handleRegister.bind(this)}>REGISTER</button>
                 </div>
                 <div>
                     <p>{this.state.message}</p>
                 </div>
+
                 <Link style={{ textDecoration: 'none', color: 'white' }} to="/login">Sign in here</Link>
             </div>
         )

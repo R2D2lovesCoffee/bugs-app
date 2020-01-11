@@ -3,8 +3,10 @@ import { Redirect } from 'react-router-dom';
 import axios from 'axios';
 import history from '../history';
 import { host } from '../config';
-import Project from './Project';
+import ProjectDetailsMP from './ProjectDetailsMP';
+import ProjectDetailsTST from './ProjectDetailsTST';
 import Team from './Team';
+import ProjectDetails from './ProjectDetails';
 
 export default class Home extends React.Component {
     constructor(props) {
@@ -13,12 +15,14 @@ export default class Home extends React.Component {
             teamId: '',
             teamName: '',
             projects: [],
+            newProject: '',
             // users: [],
             me: {
                 id: Number(localStorage.getItem('id')),
                 email: localStorage.getItem('email'),
                 role: localStorage.getItem('role'),
             },
+            message: '',
             toggleMembers: false
         }
     }
@@ -32,12 +36,11 @@ export default class Home extends React.Component {
                     }
                     return response.data;
                 }).then(team => {
-                    console.log(team);
                     this.setState({
                         teamId: team.id,
                         teamName: team.name,
-                        projects: team.projects,
-                        // users: team.users
+                        projects: team.projects.map(project => { return { ...project, toggle: false } }),
+                        message: ''
                     });
                 }).catch(error => {
                     this.setState({ message: error.response.data.message });
@@ -45,8 +48,37 @@ export default class Home extends React.Component {
         }
     }
 
+    handleNewProjectChange(event) {
+        this.setState({ newProject: event.target.value })
+    }
+
+    handleAddProject() {
+        if (this.state.newProject.length >= 4) {
+            axios.post(`${host}/teams/${this.state.teamId}/projects`, { name: this.state.newProject })
+                .then(response => {
+                    if (response.error) {
+                        throw response.error;
+                    }
+                    return response.data;
+                }).then(project => {
+                    const projects = [...this.state.projects, project];
+                    this.setState({ projects, message: '', newProject: '' });
+                }).catch(error => {
+                    this.setState({ message: error.response.data.message })
+                })
+        } else {
+            this.setState({ message: 'Project name must have 4 or more characters!' });
+        }
+    }
+
+    toggleProject(project) {
+        const index = this.state.projects.findIndex(({ id }) => project.id === id);
+        const { projects } = this.state;
+        projects[index].toggle = !projects[index].toggle;
+        this.setState({ projects });
+    }
+
     render() {
-        console.log(localStorage.getItem('team_id'));
         if (localStorage.getItem('team_id') === 'null' || localStorage.getItem('team_id') === 'undefined') {
             return <Redirect to="set-team" />
         } else {
@@ -54,8 +86,24 @@ export default class Home extends React.Component {
                 <div>
                     <Team name={this.state.teamName} id={this.state.teamId} />
                     {this.state.projects.length ? this.state.projects.map((project, index) =>
-                        <Project />)
-                        : <h4>There Are No Projects</h4>}
+                        <div style={{ fontSize: '1.2em' }} key={index.toString()}>
+                            <span className="toggleable" onClick={this.toggleProject.bind(this, project)}>{project.repo}</span>
+                            {project.toggle ? <ProjectDetails id={project.id} repo={project.repo} /> : <></>}
+                        </div>)
+                        : <p>There Are No Projects</p>}
+                    {this.state.me.role === 'MP' ?
+                        <div style={{ marginTop: '3em' }}>
+                            <input style={{ display: 'block' }} placeholder="project name..." value={this.state.newProject} onChange={this.handleNewProjectChange.bind(this)} />
+                            <button style={{ marginTop: '1em' }} className="btn btn-primary" onClick={this.handleAddProject.bind(this)}>
+                                Add Project
+                            </button>
+                        </div>
+                        : <></>}
+
+                    {/* <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+                    </button> */}
+                    {/* <ProjectModal /> */}
+                    <p>{this.state.message}</p>
                 </div>
             )
         }

@@ -24,6 +24,7 @@ module.exports = db.define('commit', {
         }
     },
     link: Sequelize.STRING,
+    message: Sequelize.STRING
 }, {
-        timestamps: false
-    })
+    timestamps: false
+})

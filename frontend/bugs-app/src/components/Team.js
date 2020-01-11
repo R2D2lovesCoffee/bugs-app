@@ -30,8 +30,10 @@ export default class Team extends React.Component {
     }
 
     render() {
+
         return (
-            <div>
+
+            <div style={{ fontSize: '1.4em' }}>
                 <h2 className="toggleable" onClick={this.retrieveUsers.bind(this)}>{this.props.name}</h2>
                 {this.state.toggle ? <ul>{this.state.users.map((user) => <li key={user.id.toString()}>{user.email}</li>)}</ul> : <></>}
             </div>
